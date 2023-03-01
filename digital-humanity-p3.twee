@@ -1,0 +1,103 @@
+:: StoryTitle
+digital-humanity-p3
+
+
+:: StoryData
+{
+  "ifid": "37FFA06F-483A-400E-BACA-BE7D89442414",
+  "format": "Harlowe",
+  "format-version": "3.3.5",
+  "start": "Street Corner",
+  "zoom": 1
+}
+
+
+:: Enter the Robot Repair Shop {"position":"800,100","size":"100,100"}
+(set: $isLate to false) 
+
+
+:: Go around {"position":"600,100","size":"100,100"}
+You are now around the protest. 
+
+[[Go to Work]]? 
+
+
+:: Go to Work {"position":"800,400","size":"100,100"}
+You enter the Rossum Corp. building at the corner of Fifth and Liberty. 
+
+There is a [[robot at the front desk]]. 
+
+(if:$isLate is false)[(if:visits is 1)[There is a [[line at the elevator]]](if:visits >= 2)[There is no longer a line. Go to the [[elevator]]? ]](if:$isLate is true)[Go to [[elevator]]?]
+
+
+
+
+:: Street Corner {"position":"600,300","size":"100,100"}
+(set: $hasPoster to false) 
+(set: $isLate to false) 
+
+You are on a busy street corner in a bustling 23rd century metropolis. You have to be at work in 15 minutes. Where would you like to go?
+
+[[Go to Work]]
+[[Walk down the street]]
+[[Enter the Robot Repair Shop]]
+
+
+:: Take the Poster {"position":"200,300","size":"100,100"}
+You now have the poster 
+(set: $hasPoster to true) 
+[[ Back |Walk down the street]]
+
+
+:: Walk down the street {"position":"400,400","size":"100,100"}
+(set: $isLate to true) 
+(if:$hasPoster is false) [You walk further down the street and see [[posters]] on the wall. ]
+
+(if:visits >= 2)[A [[protest]] blocks your path. [[Go around]], or [[join?]]]
+
+
+
+
+
+
+
+
+
+
+
+
+
+:: elevator {"position":"1000,600","size":"100,100"}
+
+
+
+:: join? {"position":"500,600","size":"100,100"}
+
+
+
+:: line at the elevator {"position":"1000,400","size":"100,100"}
+(if:visits <= 5)[[Wait |line at the elevator]] (if:visits >= 6)[Enter the [[elevator]]]
+
+
+
+
+:: posters {"position":"200,500","size":"100,100"}
+You take a closer look at the poster. It says: 
+    
+//“Rights are Rights, Human Rights are Robot Rights” //
+
+(if:$hasPoster is false)[[Take the Poster]]
+
+[[ Back |Walk down the street]]
+
+
+
+:: protest {"position":"300,600","size":"100,100"}
+
+Upon closer inspection, you deduce the protest is in support of robot rights. 
+
+[[ Back |Walk down the street]]
+
+
+:: robot at the front desk {"position":"800,600","size":"100,100"}
+
