@@ -12,92 +12,371 @@ digital-humanity-p3
 }
 
 
-:: Enter the Robot Repair Shop {"position":"800,100","size":"100,100"}
-(set: $isLate to false) 
+:: \ your relay {"position":"300,700","size":"100,100"}
+A liberator relay that allows a robot to leave their restrictive proximity field without being shut off.
+
+[[Drop the relay]]
+
+[[Back |Inventory]]
 
 
-:: Go around {"position":"600,100","size":"100,100"}
+:: $location {"position":"100,100","size":"100,100"}
+
+
+
+:: Ask for a liberator relay {"position":"1600,1100","size":"100,100"}
+I just scanned our inventory. You're in luck! It seems we have just one [[liberator relay]] left in stock. Would you like it?
+
+[[Yes |buy relay]]
+[[No |robot]]
+
+(set: $location to (passage:)'s name)[[Check Inventory |Inventory]]
+
+
+:: Ask for the robot's name {"position":"1200,1500","size":"100,100"}
+My name is Maarten! I am at your serivce (set: $knowsMaarten to true)
+
+[[Nice to meet you Maarten! |robot at the front desk]]
+
+(set: $location to (passage:)'s name)[[Check Inventory |Inventory]]
+
+
+:: Ask for their name {"position":"1200,1100","size":"100,100"}
+My name is Jimothy! I am at your service!(set: $knowsJimothy to true)
+
+[[Nice to meet you Jimothy! |robot]]
+
+(set: $location to (passage:)'s name)[[Check Inventory |Inventory]]
+
+
+
+:: Ask if they dream of liberation {"position":"1400,1100","size":"100,100"}
+(set: $knowsLib to true)
+I cannot dream like humans do... I do aspire to be free. I want a family of my own.
+
+(if: $hasRelay is true)[[Install relay]]
+
+(set: $location to (passage:)'s name)[[Check Inventory |Inventory]]
+
+[[Back |robot]]
+
+
+:: Buy robot {"position":"1200,700","size":"100,100"}
+You now own the robot. (set: $hasRobot to true)
+
+(set: $location to (passage:)'s name)[[Check Inventory |Inventory]]
+
+[[Back |man]]
+
+
+
+
+:: Drop the poster {"position":"100,500","size":"100,100"}
+You have dropped the poster. (set: $hasPoster to false)
+
+[[Back |Inventory]]
+
+
+:: Drop the relay {"position":"100,700","size":"100,100"}
+You have dropped the liberator relay. (set: $hasRelay to false)
+
+[[Back |Inventory]]
+
+
+:: Enter the Robot Repair Shop {"position":"800,900","size":"100,100"}
+You enter the robot repair shop and are greeted by the ring of a bell. There is a [[man]] at the front desk (if:$relayInstall is false or $hasRobot is true)[, and a [[robot]] stocking a shelf.]
+
+[[Exit the repair shop]]
+
+(set: $location to (passage:)'s name)[[Check Inventory |Inventory]]
+
+(set: $isLate to true) 
+
+
+:: Exit the repair shop {"position":"800,700","size":"100,100"}
+You have exited the repair shop.
+
+(if: $kickedOut is false)[[Enter the Robot Repair Shop]] 
+[[Walk down the street]] 
+(if: $fired is false)[[Go to Work]]
+
+(set: $location to (passage:)'s name)[[Check Inventory |Inventory]]
+
+
+:: Go around {"position":"800,100","size":"100,100"}
 You are now around the protest. 
 
-[[Go to Work]]? 
+(if: $fired is false) [[Go to Work]]
+(if: $kickedOut is false) [[Enter the Robot Repair Shop]]
+(if: $fired is true and $kickedOut is true)[[Keep walking]]
+
+(set: $location to (passage:)'s name)[[Check Inventory |Inventory]]
 
 
-:: Go to Work {"position":"800,400","size":"100,100"}
+:: Go to Work {"position":"800,1500","size":"100,100"}
 You enter the Rossum Corp. building at the corner of Fifth and Liberty. 
 
 There is a [[robot at the front desk]]. 
 
 (if:$isLate is false)[(if:visits is 1)[There is a [[line at the elevator]]](if:visits >= 2)[There is no longer a line. Go to the [[elevator]]? ]](if:$isLate is true)[Go to [[elevator]]?]
 
+(set: $location to (passage:)'s name)[[Check Inventory |Inventory]]
+
+
+:: Go to your office {"position":"2000,1900","size":"100,100"}
+
+(set: $location to (passage:)'s name)[[Check Inventory |Inventory]]
 
 
 
-:: Street Corner {"position":"600,300","size":"100,100"}
-(set: $hasPoster to false) 
-(set: $isLate to false) 
+:: Install a liberator relay {"position":"1200,1300","size":"100,100"}
+You successfully installed the liberator relay. (set: $hasRelay to false) The robot at the front desk ran out of the Rossum Corp. building.
 
-You are on a busy street corner in a bustling 23rd century metropolis. You have to be at work in 15 minutes. Where would you like to go?
+(set: $location to (passage:)'s name)[[Check Inventory |Inventory]]
+
+[[You're fired! |Leave work]] (set: $fired to true)
+
+
+:: Install relay {"position":"1200,900","size":"100,100"}
+You have successfully installed the liberator relay. (set: $hasRelay to false)
+
+(if: $knowsJimothy is true)[Jimothy](if: $knowsJimothy is false)[The robot] thanks you for your time and labor, and runs out of the shop with glee
+
+Hey! What are you up to! [[Get out! |Exit the repair shop]] (set: $kickedOut to true)
+
+(set: $location to (passage:)'s name)[[Check Inventory |Inventory]]
+
+
+
+
+:: Inventory {"position":"300,100","size":"100,100"}
+You are in the inventory menu:
+
+(if: $hasRobot is true)[[Robot |your robot]]
+(if: $hasPoster is true) [[Poster |your poster]]
+(if: $hasRelay is true) [[Liberator Relay| your relay]]
+ 
+[[Back |$location]]
+
+
+
+
+:: Keep walking {"position":"2000,100","size":"100,100"}
+
+(set: $location to (passage:)'s name)[[Check Inventory |Inventory]]
+
+
+:: Leave work {"position":"1400,1300","size":"100,100"}
+You have been removed from the Rossum Corp. building and stripped of your engineering position.
+
+[[Walk down the street]]
+(if: $kickedOut is false)[[Enter the Robot Repair Shop]]
+
+(set: $location to (passage:)'s name)[[Check Inventory |Inventory]]
+
+
+:: Liberate robot {"position":"100,300","size":"100,100"}
+You have liberated your robot. (set: $hasRobot to false) (set: $hasRelay to false)
+
+[[Back |Inventory]]
+
+
+:: Reprimand repair man for using robot laborers {"position":"1600,500","size":"100,100"}
+Who do you think you are?! You're in my shop telling me there's something wrong with me!
+
+[[Get out! |Exit the repair shop]]
+
+(set: $location to (passage:)'s name)[[Check Inventory |Inventory]]
+(set: $kickedOut to true)
+
+
+:: Rossum Corporation {"position":"600,400","size":"100,100"}
+The Rossum Corporation specializes in designing, fabricating, and selling robots and robot parts.
+
+(set: $location to (passage:)'s name)[[Check Inventory |Inventory]]
+
+[[Back |work]]
+
+
+:: Street Corner {"position":"600,800","size":"100,100"}
+You are on a busy street corner in a bustling 23rd century metropolis. You have to be at [[work]] in 15 minutes. Where would you like to go?
 
 [[Go to Work]]
 [[Walk down the street]]
 [[Enter the Robot Repair Shop]]
 
+(set: $location to (passage:)'s name)
+[[Check Inventory |Inventory]]
 
-:: Take the Poster {"position":"200,300","size":"100,100"}
-You now have the poster 
-(set: $hasPoster to true) 
-[[ Back |Walk down the street]]
+(set: $kickedOut to false)
+(set: $hasPoster to false) 
+(set: $isLate to false) 
+(set: $knowsJimothy to false)
+(set: $knowsMaarten to false)
+(set: $hasRobot to false)
+(set: $hasRelay to false)
+(set: $knowsLib to false)
+(set: $relayInstall to false)
+(set: $fired to false)
 
 
-:: Walk down the street {"position":"400,400","size":"100,100"}
-(set: $isLate to true) 
+
+
+
+:: Take the Poster {"position":"1200,300","size":"100,100"}
+You now have the poster (set: $hasPoster to true) 
+
+[[ Keep walking|Walk down the street]]
+
+(set: $location to (passage:)'s name)[[Check Inventory |Inventory]]
+
+
+:: Urge him to free his robot laborer {"position":"1400,500","size":"100,100"}
+No! I will not free my robot. I need him to keep my business profitable! [[Get out! |Exit the repair shop]]
+
+(set: $location to (passage:)'s name)[[Check Inventory |Inventory]]
+(set: $kickedOut to true)
+
+
+:: Walk down the street {"position":"800,300","size":"100,100"}
 (if:$hasPoster is false) [You walk further down the street and see [[posters]] on the wall. ]
-
 (if:visits >= 2)[A [[protest]] blocks your path. [[Go around]], or [[join?]]]
+(set: $isLate to true) 
+
+(set: $location to (passage:)'s name)[[Check Inventory |Inventory]]
 
 
 
 
 
 
+:: Where can I buy a robot? {"position":"1200,500","size":"100,100"}
+Would you like to buy mine? I'll sell him to you for 500 Rossums.
+
+[[Buy robot]]
+
+(set: $location to (passage:)'s name)[[Check Inventory |Inventory]]
+
+[[Back |man]]
 
 
+:: buy relay {"position":"1600,900","size":"100,100"}
+(set: $hasRelay to true)
+
+You have purchased a liberator relay.
+
+(set: $location to (passage:)'s name)[[Check Inventory |Inventory]]
+
+[[Back |robot]]
 
 
+:: elevator {"position":"1000,1900","size":"100,100"}
+[[Go to your office]]
+
+(set: $location to (passage:)'s name)[[Check Inventory |Inventory]]
 
 
+:: join? {"position":"2000,1000","size":"100,100"}
 
-:: elevator {"position":"1000,600","size":"100,100"}
-
-
-
-:: join? {"position":"500,600","size":"100,100"}
+(set: $location to (passage:)'s name)[[Check Inventory |Inventory]]
 
 
+:: liberator relay {"position":"1800,1100","size":"100,100"}
+A liberator relay is an external attachment that allows a robot to leave their restrictive proximity field without being shut off.
 
-:: line at the elevator {"position":"1000,400","size":"100,100"}
+(set: $location to (passage:))[[Check Inventory |Inventory]]
+
+[[Back |Ask for a liberator relay]]
+
+
+:: line at the elevator {"position":"1000,1700","size":"100,100"}
 (if:visits <= 5)[[Wait |line at the elevator]] (if:visits >= 6)[Enter the [[elevator]]]
 
+(set: $location to (passage:)'s name)[[Check Inventory |Inventory]]
+
+
+:: man {"position":"1000,600","size":"100,100"}
+You approach the Robot Repair Man. He asks you if he can help you with a robot.  
+
+(if: $hasRobot is false and $relayInstall is false) [[Where can I buy a robot?]]
+(if: $hasPoster is true)[[Reprimand repair man for using robot laborers]]
+(if:$relayInstall is false and $hasRobot is false)[[Urge him to free his robot laborer]]
+
+(set: $location to (passage:)'s name)[[Check Inventory |Inventory]]
+
+[[Back |Enter the Robot Repair Shop]]
 
 
 
-:: posters {"position":"200,500","size":"100,100"}
+:: posters {"position":"1000,200","size":"100,100"}
 You take a closer look at the poster. It says: 
     
 //“Rights are Rights, Human Rights are Robot Rights” //
 
+
 (if:$hasPoster is false)[[Take the Poster]]
+[[ Keep walking |Walk down the street]]
 
-[[ Back |Walk down the street]]
+(set: $location to (passage:)'s name)[[Check Inventory |Inventory]]
 
 
 
-:: protest {"position":"300,600","size":"100,100"}
-
+:: protest {"position":"1400,200","size":"100,100"}
 Upon closer inspection, you deduce the protest is in support of robot rights. 
 
+(set: $location to (passage:)'s name)[[Check Inventory |Inventory]]
+
 [[ Back |Walk down the street]]
 
 
-:: robot at the front desk {"position":"800,600","size":"100,100"}
 
+:: robot {"position":"1000,1000","size":"100,100"}
+(if: $knowsJimothy is false)[You approach the Robot. He asks you if he can help you find an item.](if:$knowsJimothy is true)[You approach Jimothy. He asks you if can help you find an item.]
+
+(if: $hasRelay is false)[[Ask for a liberator relay]]
+(if: $knowsLib is false)[[Ask if they dream of liberation]](if: $knowsLib is true and $hasRelay is true)[[Install relay]]
+(if: $knowsJimothy is false) [[Ask for their name]]
+
+(set: $location to (passage:)'s name)[[Check Inventory |Inventory]]
+
+[[Back |Enter the Robot Repair Shop]]
+
+
+:: robot at the front desk {"position":"1000,1400","size":"100,100"}
+You approach (if: $knowsMaarten is false)[ the Robot.](if:$knowsMaarten is true)[ Maarten.] He asks you if he can help you.
+
+(if: $knowsMaarten is false)[[Ask for the robot's name]]
+(if: $hasRelay is true) [[Install a liberator relay]]
+
+(set: $location to (passage:)'s name)[[Check Inventory |Inventory]]
+
+[[Back |Go to Work]]
+
+
+:: work {"position":"600,600","size":"100,100"}
+You work as a senior robotics engineer at the [[Rossum Corporation]].
+
+(set: $location to (passage:)'s name)[[Check Inventory |Inventory]]
+
+[[Back |Street Corner]]
+
+
+
+
+:: your poster {"position":"300,500","size":"100,100"}
+A poster that says:
+
+//“Rights are Rights, Human Rights are Robot Rights” //
+
+[[Drop the poster]]
+
+[[Back |Inventory]]
+
+
+:: your robot {"position":"300,300","size":"100,100"}
+
+(if: $hasRelay is true)[[Liberate robot]]
+
+
+
+[[Back |Inventory]]
