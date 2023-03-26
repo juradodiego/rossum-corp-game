@@ -33,6 +33,7 @@ I just scanned our inventory. You're in luck! It seems we have just one [[libera
 (set: $location to (passage:)'s name)[[Check Inventory |Inventory]]
 
 
+
 :: Ask for the robot's name {"position":"1200,1500","size":"100,100"}
 My name is Maarten! I am at your serivce (set: $knowsMaarten to true)
 
@@ -59,6 +60,12 @@ I cannot dream like humans do... I do aspire to be free. I want a family of my o
 (set: $location to (passage:)'s name)[[Check Inventory |Inventory]]
 
 [[Back |robot]]
+
+
+:: Bomb Ending {"position":"3000,1900","size":"100,100"}
+You activate the bomb(if: $knowsPlot is true)[ for the rebellion]. The explosion levels the Rossum Corporation HQ. You die in the process. All robot part manufacturing has ceased. [[Try again?|Street Corner]]
+
+
 
 
 :: Buy robot {"position":"1200,700","size":"100,100"}
@@ -124,9 +131,39 @@ There is a [[robot at the front desk]].
 
 
 :: Go to your office {"position":"2000,1900","size":"100,100"}
+You are now in your office on the 12 floor. There is a variety of robotic parts strewn across your [[workbench]]. (if: $hasPoster is true)[[Hang up the poster?]] (if: $hungPosterInOffice is true)[There is a [[poster]] hanging on the wall]
 
 (set: $location to (passage:)'s name)[[Check Inventory |Inventory]]
 
+
+
+
+:: Hang up the poster? {"position":"2200,1700","size":"100,100"}
+You hang up the poster in your office.
+
+[[Back |Go to your office]]
+
+(set: $location to (passage:)'s name)[[Check Inventory |Inventory]]
+(set: $hungPosterInOffice to true)
+
+
+:: I don't know any of the engineers. {"position":"2600,900","size":"100,100"}
+Oh, okay. Well I'll leave you alone then. [[Okay?|Walk away?]]
+
+
+(set: $location to (passage:)'s name)[[Check Inventory |Inventory]]
+(set: $supportsRobots to false)
+(set: $knowPlot to true)
+
+
+:: I'm an engineer. {"position":"2600,1100","size":"100,100"}
+Great! So you'll help us! Alright, go to work, build the bomb, and detonate it.
+
+(if: $fired is false) [[Go to Work]]
+(if: $fired is true)[[Actually, I just got fired. |I don't know any of the engineers.]]
+
+(set: $location to (passage:)'s name)[[Check Inventory |Inventory]]
+(set: $knowPlot to true)
 
 
 :: Install a liberator relay {"position":"1200,1300","size":"100,100"}
@@ -145,7 +182,7 @@ You have successfully installed the liberator relay. (set: $hasRelay to false)
 Hey! What are you up to! [[Get out! |Exit the repair shop]] (set: $kickedOut to true)
 
 (set: $location to (passage:)'s name)[[Check Inventory |Inventory]]
-
+(set: $supportsRobots to true)
 
 
 
@@ -162,6 +199,9 @@ You are in the inventory menu:
 
 
 :: Keep walking {"position":"2000,100","size":"100,100"}
+[[Keep walking]]
+(if: visits > 10)[[Lonely ending]]
+
 
 (set: $location to (passage:)'s name)[[Check Inventory |Inventory]]
 
@@ -175,10 +215,28 @@ You have been removed from the Rossum Corp. building and stripped of your engine
 (set: $location to (passage:)'s name)[[Check Inventory |Inventory]]
 
 
+:: Let me think about it. {"position":"2400,1200","size":"100,100"}
+What's there to think about? You're at the protest! Do you know an engineer or not?
+
+[[I'm an engineer.]]
+[[I don't know any of the engineers.]]
+
+(set: $location to (passage:)'s name)[[Check Inventory |Inventory]]
+
+
 :: Liberate robot {"position":"100,300","size":"100,100"}
 You have liberated your robot. (set: $hasRobot to false) (set: $hasRelay to false)
 
 [[Back |Inventory]]
+
+
+:: Lonely ending {"position":"3000,300","size":"100,100"}
+You keep walking. You've burned all your bridges and isolated yourself from society. Your contradictions, and indifference led to lonlieness. [[Try again?|Street Corner]]
+
+
+:: Memory Wipe Ending {"position":"3000,2100","size":"100,100"}
+You activate the memory wiper. All robots in the world drop to the floor. No more robots. Time for the Rossum Corp. to make money. [[Try again?|Street Corner]]
+
 
 
 :: Reprimand repair man for using robot laborers {"position":"1600,500","size":"100,100"}
@@ -188,6 +246,7 @@ Who do you think you are?! You're in my shop telling me there's something wrong 
 
 (set: $location to (passage:)'s name)[[Check Inventory |Inventory]]
 (set: $kickedOut to true)
+(set: $supportsRobots to true)
 
 
 :: Rossum Corporation {"position":"600,400","size":"100,100"}
@@ -196,6 +255,18 @@ The Rossum Corporation specializes in designing, fabricating, and selling robots
 (set: $location to (passage:)'s name)[[Check Inventory |Inventory]]
 
 [[Back |work]]
+
+
+:: Speak to the man? {"position":"2200,1000","size":"100,100"}
+(if: visits is 1)[The man approaches you, and says: "Hi, I'm Isaac. I recognized you from yesterday."[[Okay, and?|Speak to the man?]]]
+(if: visits is 2)[I was watching the front of the Rossum building. [[Why?|Speak to the man?]]]
+(if: visits is 3)[I'm looking for an insider. I need someone for a job. [[What's the job?|Speak to the man?]]]
+(if: visits > 3)[
+We want to blow up the building, but we can't get components inside. We need someone on one of the engineering floors.
+[[I'm an engineer.]]
+[[I don't know any of the engineers.]]
+[[Let me think about it.]]
+]
 
 
 :: Street Corner {"position":"600,800","size":"100,100"}
@@ -218,8 +289,9 @@ You are on a busy street corner in a bustling 23rd century metropolis. You have 
 (set: $knowsLib to false)
 (set: $relayInstall to false)
 (set: $fired to false)
-
-
+(set: $hungPosterInOffice to false)
+(set: $supportsRobots to false)
+(set: $knowsPlot to false)
 
 
 
@@ -231,11 +303,33 @@ You now have the poster (set: $hasPoster to true)
 (set: $location to (passage:)'s name)[[Check Inventory |Inventory]]
 
 
+
+:: Take the Poster Down {"position":"2200,1500","size":"100,100"}
+You take down the poster.
+
+[[Back |Go to your office]]
+
+(set: $location to (passage:)'s name)[[Check Inventory |Inventory]]
+(set: $hungPosterInOffice to false)
+(set: $hasPoster to true)
+
+
 :: Urge him to free his robot laborer {"position":"1400,500","size":"100,100"}
 No! I will not free my robot. I need him to keep my business profitable! [[Get out! |Exit the repair shop]]
 
 (set: $location to (passage:)'s name)[[Check Inventory |Inventory]]
 (set: $kickedOut to true)
+(set: $supportsRobots to true)
+
+
+:: Walk away? {"position":"2200,700","size":"100,100"}
+You walk away from the protest.
+
+(if: $fired is false) [[Go to Work]]
+(if: $kickedOut is false) [[Enter the Robot Repair Shop]]
+(if: $fired is true and $kickedOut is true)[[Keep walking]]
+
+(set: $location to (passage:)'s name)[[Check Inventory |Inventory]]
 
 
 :: Walk down the street {"position":"800,300","size":"100,100"}
@@ -260,6 +354,22 @@ Would you like to buy mine? I'll sell him to you for 500 Rossums.
 [[Back |man]]
 
 
+:: bomb {"position":"2400,1900","size":"100,100"}
+(if: visits is 1)[You begin soldering two components together.]
+(if: visits is 2)[You print out a metallic casing]
+(if: visits is 3)[You insert a holographic screen into the casing]
+(if: visits is 4)[You solder the screen to another componenet]
+(if: visits is 5)[You insert the components into the casing]
+(if: visits is 6)[You close the casing, and rest it on the work bench]
+(if: visits >= 7)[You built a bomb, [[Bomb Ending]]]
+
+(if: visits < 7)[[Keep building?|bomb]]
+(if: visits >= 7)[[Back |workbench]]
+
+
+(set: $location to (passage:)'s name)[[Check Inventory |Inventory]]
+
+
 :: buy relay {"position":"1600,900","size":"100,100"}
 (set: $hasRelay to true)
 
@@ -269,6 +379,8 @@ You have purchased a liberator relay.
 
 [[Back |robot]]
 
+(set: $supportsRobots to true)
+
 
 :: elevator {"position":"1000,1900","size":"100,100"}
 [[Go to your office]]
@@ -276,9 +388,15 @@ You have purchased a liberator relay.
 (set: $location to (passage:)'s name)[[Check Inventory |Inventory]]
 
 
-:: join? {"position":"2000,1000","size":"100,100"}
+:: join? {"position":"2000,900","size":"100,100"}
+You join the protest in support of robot rights. A man in a suit is approaching you.
+
+[[Walk away?]]
+[[Speak to the man?]]
+
 
 (set: $location to (passage:)'s name)[[Check Inventory |Inventory]]
+(set: $supportsRobots to true)
 
 
 :: liberator relay {"position":"1800,1100","size":"100,100"}
@@ -306,6 +424,34 @@ You approach the Robot Repair Man. He asks you if he can help you with a robot.
 
 [[Back |Enter the Robot Repair Shop]]
 
+
+
+:: memory {"position":"2400,2100","size":"100,100"}
+(if: visits is 1)[You begin soldering two components together.]
+(if: visits is 2)[You print out a metallic casing]
+(if: visits is 3)[You insert a holographic screen into the casing]
+(if: visits is 4)[You solder the screen to another componenet]
+(if: visits is 5)[You insert the components into the casing]
+(if: visits is 6)[You close the casing, and rest it on the work bench]
+(if: visits >= 7)[You built a robot memory wiper, [[activate it?|Memory Wipe Ending]]]
+
+(if: visits < 7)[[Keep building?|memory]]
+(if: visits >= 7)[[Back |workbench]]
+
+
+(set: $location to (passage:)'s name)[[Check Inventory |Inventory]]
+
+
+:: poster {"position":"2000,1700","size":"100,100"}
+You take a closer look at the poster. It says: 
+    
+//“Rights are Rights, Human Rights are Robot Rights” //
+
+
+(if:$hasPoster is false)[[Take the Poster Down]]
+[[Back |Go to your office]]
+
+(set: $location to (passage:)'s name)[[Check Inventory |Inventory]]
 
 
 :: posters {"position":"1000,200","size":"100,100"}
@@ -361,6 +507,16 @@ You work as a senior robotics engineer at the [[Rossum Corporation]].
 [[Back |Street Corner]]
 
 
+
+
+:: workbench {"position":"2200,1900","size":"100,100"}
+You approach your dull gunmetal gray workbench. There are instructional tablets with other tools strewn about the workbench. 
+
+There is an incomplete project on your desk. (if: $supportsRobots is true)[[Work on it?  |bomb]] (if: $supportsRobots is false)[[Work on it? |memory]]
+
+[[Back |Go to your office]]
+
+(set: $location to (passage:)'s name)[[Check Inventory |Inventory]]
 
 
 :: your poster {"position":"300,500","size":"100,100"}
