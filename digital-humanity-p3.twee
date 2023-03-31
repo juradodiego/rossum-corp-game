@@ -69,7 +69,7 @@ You activate the bomb(if: $knowsPlot is true)[ for the rebellion]. The explosion
 
 
 :: Buy robot {"position":"1200,700","size":"100,100"}
-You now own the robot. (set: $hasRobot to true)
+You now own the robot. (set: $hasRobot to true)(set: $knowsJimothy to true)
 
 (set: $location to (passage:)'s name)[[Check Inventory |Inventory]]
 
@@ -91,7 +91,7 @@ You have dropped the liberator relay. (set: $hasRelay to false)
 
 
 :: Enter the Robot Repair Shop {"position":"800,900","size":"100,100"}
-You enter the robot repair shop and are greeted by the ring of a bell. There is a [[man]] at the front desk (if:$relayInstall is false or $hasRobot is true)[, and a [[robot]] stocking a shelf.]
+You enter the robot repair shop and are greeted by the ring of a bell. There is a [[man]] at the front desk (if:$relayInstall is false and $hasRobot is false)[, and a [[robot]] stocking a shelf.]
 
 [[Exit the repair shop]]
 
@@ -115,7 +115,7 @@ You are now around the protest.
 
 (if: $fired is false) [[Go to Work]]
 (if: $kickedOut is false) [[Enter the Robot Repair Shop]]
-(if: $fired is true and $kickedOut is true)[[Keep walking]]
+(if: $fired is true and $kickedOut is true)[[Keep walking?]]
 
 (set: $location to (passage:)'s name)[[Check Inventory |Inventory]]
 
@@ -153,7 +153,7 @@ Oh, okay. Well I'll leave you alone then. [[Okay?|Walk away?]]
 
 (set: $location to (passage:)'s name)[[Check Inventory |Inventory]]
 (set: $supportsRobots to false)
-(set: $knowPlot to true)
+(set: $knowsPlot to true)
 
 
 :: I'm an engineer. {"position":"2600,1100","size":"100,100"}
@@ -163,7 +163,7 @@ Great! So you'll help us! Alright, go to work, build the bomb, and detonate it.
 (if: $fired is true)[[Actually, I just got fired. |I don't know any of the engineers.]]
 
 (set: $location to (passage:)'s name)[[Check Inventory |Inventory]]
-(set: $knowPlot to true)
+(set: $knowsPlot to true)
 
 
 :: Install a liberator relay {"position":"1200,1300","size":"100,100"}
@@ -198,9 +198,8 @@ You are in the inventory menu:
 
 
 
-:: Keep walking {"position":"2000,100","size":"100,100"}
-[[Keep walking]]
-(if: visits > 10)[[Lonely ending]]
+:: Keep walking? {"position":"2000,100","size":"100,100"}
+(if: visits <= 10)[[Keep walking?]](if: visits > 10)[[Keep walking?|Lonely ending]]
 
 
 (set: $location to (passage:)'s name)[[Check Inventory |Inventory]]
@@ -235,8 +234,7 @@ You keep walking. You've burned all your bridges and isolated yourself from soci
 
 
 :: Memory Wipe Ending {"position":"3000,2100","size":"100,100"}
-You activate the memory wiper. All robots in the world drop to the floor. No more robots. Time for the Rossum Corp. to make money. [[Try again?|Street Corner]]
-
+You activate the memory wiper. All robots in the world drop to the floor. No more robots. Time for the Rossum to make money. [[Try again?|Street Corner]]
 
 
 :: Reprimand repair man for using robot laborers {"position":"1600,500","size":"100,100"}
@@ -327,7 +325,7 @@ You walk away from the protest.
 
 (if: $fired is false) [[Go to Work]]
 (if: $kickedOut is false) [[Enter the Robot Repair Shop]]
-(if: $fired is true and $kickedOut is true)[[Keep walking]]
+(if: $fired is true and $kickedOut is true)[[Keep walking?]]
 
 (set: $location to (passage:)'s name)[[Check Inventory |Inventory]]
 
@@ -361,7 +359,7 @@ Would you like to buy mine? I'll sell him to you for 500 Rossums.
 (if: visits is 4)[You solder the screen to another componenet]
 (if: visits is 5)[You insert the components into the casing]
 (if: visits is 6)[You close the casing, and rest it on the work bench]
-(if: visits >= 7)[You built a bomb, [[Bomb Ending]]]
+(if: visits >= 7)[You built a bomb, [[activate it? |Bomb Ending]]]
 
 (if: visits < 7)[[Keep building?|bomb]]
 (if: visits >= 7)[[Back |workbench]]
@@ -530,9 +528,8 @@ A poster that says:
 
 
 :: your robot {"position":"300,300","size":"100,100"}
+A robot named Jimothy.
 
 (if: $hasRelay is true)[[Liberate robot]]
-
-
 
 [[Back |Inventory]]

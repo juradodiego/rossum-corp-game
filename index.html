@@ -45,7 +45,7 @@ There is a [[robot at the front desk]].
 
 
 
-</tw-passagedata><tw-passagedata pid="4" name="Enter the Robot Repair Shop" tags="" position="800,900" size="100,100">You enter the robot repair shop and are greeted by the ring of a bell. There is a [[man]] at the front desk (if:$relayInstall is false or $hasRobot is true)[, and a [[robot]] stocking a shelf.]
+</tw-passagedata><tw-passagedata pid="4" name="Enter the Robot Repair Shop" tags="" position="800,900" size="100,100">You enter the robot repair shop and are greeted by the ring of a bell. There is a [[man]] at the front desk (if:$relayInstall is false and $hasRobot is false)[, and a [[robot]] stocking a shelf.]
 
 [[Exit the repair shop]]
 
@@ -74,7 +74,7 @@ There is a [[robot at the front desk]].
 
 (if: $fired is false) [[Go to Work]]
 (if: $kickedOut is false) [[Enter the Robot Repair Shop]]
-(if: $fired is true and $kickedOut is true)[[Keep walking]]
+(if: $fired is true and $kickedOut is true)[[Keep walking?]]
 
 (set: $location to (passage:)&#39;s name)[[Check Inventory |Inventory]]</tw-passagedata><tw-passagedata pid="9" name="join?" tags="" position="2000,900" size="100,100">You join the protest in support of robot rights. A man in a suit is approaching you.
 
@@ -185,7 +185,7 @@ Hey! What are you up to! [[Get out! |Exit the repair shop]] (set: $kickedOut to 
 
 (set: $location to (passage:)&#39;s name)[[Check Inventory |Inventory]]
 (set: $supportsRobots to true)
-</tw-passagedata><tw-passagedata pid="28" name="Buy robot" tags="" position="1200,700" size="100,100">You now own the robot. (set: $hasRobot to true)
+</tw-passagedata><tw-passagedata pid="28" name="Buy robot" tags="" position="1200,700" size="100,100">You now own the robot. (set: $hasRobot to true)(set: $knowsJimothy to true)
 
 (set: $location to (passage:)&#39;s name)[[Check Inventory |Inventory]]
 
@@ -199,10 +199,9 @@ Hey! What are you up to! [[Get out! |Exit the repair shop]] (set: $kickedOut to 
  
 [[Back |$location]]
 
-</tw-passagedata><tw-passagedata pid="30" name="your robot" tags="" position="300,300" size="100,100">
+</tw-passagedata><tw-passagedata pid="30" name="your robot" tags="" position="300,300" size="100,100">A robot named Jimothy.
+
 (if: $hasRelay is true)[[Liberate robot]]
-
-
 
 [[Back |Inventory]]</tw-passagedata><tw-passagedata pid="31" name="$location" tags="" position="100,100" size="100,100"></tw-passagedata><tw-passagedata pid="32" name="your poster" tags="" position="300,500" size="100,100">A poster that says:
 
@@ -233,8 +232,7 @@ Hey! What are you up to! [[Get out! |Exit the repair shop]] (set: $kickedOut to 
 [[Walk down the street]]
 (if: $kickedOut is false)[[Enter the Robot Repair Shop]]
 
-(set: $location to (passage:)&#39;s name)[[Check Inventory |Inventory]]</tw-passagedata><tw-passagedata pid="40" name="Keep walking" tags="" position="2000,100" size="100,100">[[Keep walking]]
-(if: visits &gt; 10)[[Lonely ending]]
+(set: $location to (passage:)&#39;s name)[[Check Inventory |Inventory]]</tw-passagedata><tw-passagedata pid="40" name="Keep walking?" tags="" position="2000,100" size="100,100">(if: visits &lt;= 10)[[Keep walking?]](if: visits &gt; 10)[[Keep walking?|Lonely ending]]
 
 
 (set: $location to (passage:)&#39;s name)[[Check Inventory |Inventory]]</tw-passagedata><tw-passagedata pid="41" name="workbench" tags="" position="2200,1900" size="100,100">You approach your dull gunmetal gray workbench. There are instructional tablets with other tools strewn about the workbench. 
@@ -268,7 +266,7 @@ There is an incomplete project on your desk. (if: $supportsRobots is true)[[Work
 (if: visits is 4)[You solder the screen to another componenet]
 (if: visits is 5)[You insert the components into the casing]
 (if: visits is 6)[You close the casing, and rest it on the work bench]
-(if: visits &gt;= 7)[You built a bomb, [[Bomb Ending]]]
+(if: visits &gt;= 7)[You built a bomb, [[activate it? |Bomb Ending]]]
 
 (if: visits &lt; 7)[[Keep building?|bomb]]
 (if: visits &gt;= 7)[[Back |workbench]]
@@ -288,12 +286,11 @@ There is an incomplete project on your desk. (if: $supportsRobots is true)[[Work
 (if: visits &gt;= 7)[[Back |workbench]]
 
 
-(set: $location to (passage:)&#39;s name)[[Check Inventory |Inventory]]</tw-passagedata><tw-passagedata pid="48" name="Memory Wipe Ending" tags="" position="3000,2100" size="100,100">You activate the memory wiper. All robots in the world drop to the floor. No more robots. Time for the Rossum Corp. to make money. [[Try again?|Street Corner]]
-</tw-passagedata><tw-passagedata pid="49" name="Walk away?" tags="" position="2200,700" size="100,100">You walk away from the protest.
+(set: $location to (passage:)&#39;s name)[[Check Inventory |Inventory]]</tw-passagedata><tw-passagedata pid="48" name="Memory Wipe Ending" tags="" position="3000,2100" size="100,100">You activate the memory wiper. All robots in the world drop to the floor. No more robots. Time for the Rossum to make money. [[Try again?|Street Corner]]</tw-passagedata><tw-passagedata pid="49" name="Walk away?" tags="" position="2200,700" size="100,100">You walk away from the protest.
 
 (if: $fired is false) [[Go to Work]]
 (if: $kickedOut is false) [[Enter the Robot Repair Shop]]
-(if: $fired is true and $kickedOut is true)[[Keep walking]]
+(if: $fired is true and $kickedOut is true)[[Keep walking?]]
 
 (set: $location to (passage:)&#39;s name)[[Check Inventory |Inventory]]</tw-passagedata><tw-passagedata pid="50" name="Speak to the man?" tags="" position="2200,1000" size="100,100">(if: visits is 1)[The man approaches you, and says: &quot;Hi, I&#39;m Isaac. I recognized you from yesterday.&quot;[[Okay, and?|Speak to the man?]]]
 (if: visits is 2)[I was watching the front of the Rossum building. [[Why?|Speak to the man?]]]
@@ -309,12 +306,12 @@ We want to blow up the building, but we can&#39;t get components inside. We need
 (if: $fired is true)[[Actually, I just got fired. |I don&#39;t know any of the engineers.]]
 
 (set: $location to (passage:)&#39;s name)[[Check Inventory |Inventory]]
-(set: $knowPlot to true)</tw-passagedata><tw-passagedata pid="52" name="I don&#39;t know any of the engineers." tags="" position="2600,900" size="100,100">Oh, okay. Well I&#39;ll leave you alone then. [[Okay?|Walk away?]]
+(set: $knowsPlot to true)</tw-passagedata><tw-passagedata pid="52" name="I don&#39;t know any of the engineers." tags="" position="2600,900" size="100,100">Oh, okay. Well I&#39;ll leave you alone then. [[Okay?|Walk away?]]
 
 
 (set: $location to (passage:)&#39;s name)[[Check Inventory |Inventory]]
 (set: $supportsRobots to false)
-(set: $knowPlot to true)</tw-passagedata><tw-passagedata pid="53" name="Let me think about it." tags="" position="2400,1200" size="100,100">What&#39;s there to think about? You&#39;re at the protest! Do you know an engineer or not?
+(set: $knowsPlot to true)</tw-passagedata><tw-passagedata pid="53" name="Let me think about it." tags="" position="2400,1200" size="100,100">What&#39;s there to think about? You&#39;re at the protest! Do you know an engineer or not?
 
 [[I&#39;m an engineer.]]
 [[I don&#39;t know any of the engineers.]]
